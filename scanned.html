@@ -1,10 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Scanned</title>
+    <title>Scanned Page</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="api.js"></script>
 </head>
 <body>
-    <h1>Scanned</h1>
+
+    <script>
+        // Get the user data from local storage
+        var userData = JSON.parse(localStorage.getItem('user-data'));
+
+        // Display the user data
+        document.getElementById('user-data').textContent = 'Name: ' + userData.name + ', Phone Number: ' + userData.phoneNumber;
+
+        // Call the initClient function to update the spreadsheet
+        initClient();
+    </script>
 </body>
 </html>

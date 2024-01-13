@@ -3,15 +3,9 @@
 <head>
     <title>User Input</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <script>
-        // Check if we have user data in local storage
-        var userData = localStorage.getItem('user-data');
-
-        if (userData) {
-            // We have user data in local storage, redirect to the "scanned" page
-            window.location.href = './scanned.html';
-        }
-    </script>
+    <script src="script.js"></script>
+    <script src="api.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
 </head>
 <body>
     <form id="user-form">
@@ -22,6 +16,28 @@
         <input type="submit" value="Submit">
     </form>
 
-    <script src="script.js"></script>
+    <script>
+        // Check if we have user data in local storage
+        var userData = localStorage.getItem('user-data');
+
+        if (userData) {
+            // We have user data in local storage, redirect to the "scanned" page
+            window.location.href = './scanned.html';
+        }
+
+        document.getElementById('user-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get the name and phone number from the form
+            let name = document.getElementById('name').value;
+            let phoneNumber = document.getElementById('phone').value;
+
+            // Save the user data in local storage
+            localStorage.setItem('user-data', JSON.stringify({ name: name, phoneNumber: phoneNumber }));
+
+            // Call the initClient function to update the spreadsheet
+            initClient();
+        });
+    </script>
 </body>
 </html>
