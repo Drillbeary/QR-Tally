@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "googleapis": "^130.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-mock-axios": "^4.7.3"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}

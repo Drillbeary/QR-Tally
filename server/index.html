@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Input</title>
+    <link rel="stylesheet" type="text/css" href="/Styles.css">
+    <script src="https://apis.google.com/js/api.js"></script>
+</head>
+<body>
+    <form id="user-form" action="/submit" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <label for="phone">Phone Number:</label><br>
+        <input type="tel" id="phone" name="phone" required><br>
+        <input type="hidden" id="stand" name="stand">
+        <input type="submit" value="submit">
+    </form>
+    <div id="message" style="display: none;">Submitted!</div>
+
+    <script>
+        document.getElementById('user-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // prevent the form from being submitted normally
+        
+            var phone = document.getElementById('phone').value;
+            var phonePattern = /^\d{8}$/;
+        
+            if (!phonePattern.test(phone)) {
+                alert('Please enter a valid phone number.');
+            } else {
+                var name = document.getElementById('name').value;
+                var stand = document.getElementById('stand').value;
+        
+                // Send the form data to the server using Fetch
+                fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'name': name,
+                        'phone': phone,
+                        'stand': stand
+                    })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    // Handle the response from the server
+                    console.log('Response:', data);
+        
+                    // Hide the form
+                    document.getElementById('user-form').style.display = 'none';
+        
+                    // Show the message
+                    document.getElementById('message').style.display = 'block';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+        </script>
+        
+</body>
+</html>

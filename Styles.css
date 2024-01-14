@@ -13,6 +13,11 @@ form {
     flex-direction: column;
 }
 
+div {
+    display: flex;
+    flex-direction: column;
+}
+
 h1 {
     text-align: center;
 }
