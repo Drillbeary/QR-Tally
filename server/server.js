@@ -2,6 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const gsrun = require('../api'); // Import gsrun from api.js
 const app = express();
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
 
 // Now you can use `client` in your `gsrun` function
 const { google } = require('googleapis');
