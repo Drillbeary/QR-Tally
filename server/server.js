@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const gsrun = require('../api.js'); // Import gsrun from api.js
+const gsrun = require('../api'); // Import gsrun from api.js
 const app = express();
 
 // Now you can use `client` in your `gsrun` function
