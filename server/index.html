@@ -7,57 +7,105 @@
 </head>
 <body>
     <form id="user-form" action="/submit" method="POST">
-        <label for="name">Name:</label><br>
+        <label for="name">Navn:</label><br>
         <input type="text" id="name" name="name" required><br>
-        <label for="phone">Phone Number:</label><br>
+        <label for="phone">Mobil Number:</label><br>
         <input type="tel" id="phone" name="phone" required><br>
         <input type="hidden" id="stand" name="stand">
         <input type="submit" value="submit">
     </form>
-    <div id="message" style="display: none;">Submitted!</div>
+    <div id="message" style="display: none;">Innsendt!</div>
 
     <script>
+        // Get the 'stand' data from the URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var stand = urlParams.get('stand');
+
+        // Set the 'stand' field value
+        if(stand !== null) {
+            document.getElementById('stand').value = stand;
+        }
+        window.onload = function() {
+            // Check if there is any user data in local storage
+            if(localStorage.getItem('userData') !== null) {
+                // Get the user data from local storage and parse it back into an object
+                var userData = JSON.parse(localStorage.getItem('userData'));
+
+                // Get the form fields
+                var name = document.getElementById('name');
+                var phone = document.getElementById('phone');
+
+                // Populate the form fields with the data from local storage
+                name.value = userData.name;
+                phone.value = userData.phone;
+
+                // Hide the form
+                document.getElementById('user-form').style.display = 'none';
+
+                // Show the message
+                document.getElementById('message').style.display = 'block';
+                
+                // Automatically submit the form
+                document.getElementById('user-form').dispatchEvent(new Event('submit'));
+            }
+        }
         document.getElementById('user-form').addEventListener('submit', function(event) {
             event.preventDefault(); // prevent the form from being submitted normally
-        
+            
             var phone = document.getElementById('phone').value;
             var phonePattern = /^\d{8}$/;
-        
+            
             if (!phonePattern.test(phone)) {
-                alert('Please enter a valid phone number.');
-            } else {
-                var name = document.getElementById('name').value;
-                var stand = document.getElementById('stand').value;
-        
-                // Send the form data to the server using Fetch
-                fetch('/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        'name': name,
-                        'phone': phone,
-                        'stand': stand
-                    })
-                })
-                .then(response => response.text())
-                .then(data => {
-                    // Handle the response from the server
-                    console.log('Response:', data);
-        
-                    // Hide the form
-                    document.getElementById('user-form').style.display = 'none';
-        
-                    // Show the message
-                    document.getElementById('message').style.display = 'block';
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+                alert('Vennligst skriv inn et gyldig telefonnummer');
+            return;
             }
-        });
-        </script>
-        
+            var name = document.getElementById('name').value;
+            var stand = document.getElementById('stand').value;
+
+            // Get the user data from local storage
+            var userDataLocalStorage = JSON.parse(localStorage.getItem('userData'));
+
+            // If the 'stand' value in local storage is the same as the 'stand' value in the form, stop the execution of the function
+            if (userDataLocalStorage && userDataLocalStorage.stand === stand) {
+                alert('Du har vært på denne standen.');
+                return;
+            }
+                // Save the user data to local storage
+            var userData = {
+                name: name,
+                phone: phone,
+                stand: stand
+            };
+            localStorage.setItem('userData', JSON.stringify(userData));
+            // Send the form data to the server using Fetch
+            fetch('/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'name': name,
+                    'phone': phone,
+                    'stand': stand
+                })
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Handle the response from the server
+                console.log('Response:', data);
+    
+                // Hide the form
+                document.getElementById('user-form').style.display = 'none';
+    
+                // Show the message
+                document.getElementById('message').style.display = 'block';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    );
+    </script>
+    
 </body>
 </html>
