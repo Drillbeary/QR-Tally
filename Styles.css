@@ -4,13 +4,23 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+
+    background-image: url('background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
     font-family: Arial, sans-serif;
 }
 
 form {
     display: flex;
     flex-direction: column;
+    width: 60%; /* Adjust this to change the form's width */
+    padding: 20px; /* Add some padding */
+    margin: auto; /* Center the form */
+    font-size: 25px; /* Increase the font size */
+    font-weight: bold;
 }
 
 div {
@@ -21,3 +31,4 @@ div {
 h1 {
     text-align: center;
 }
+
