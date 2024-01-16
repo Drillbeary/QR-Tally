@@ -18,15 +18,16 @@
     <div id="message" style="display: none;">Innsendt!</div>
 
     <script>
-        // Get the 'stand' data from the URL
-        var urlParams = new URLSearchParams(window.location.search);
-        var stand = urlParams.toString();; // Changed this line
-
-        // Set the 'stand' field value
-        if(stand !== null) {
-            document.getElementById('stand').value = stand;
-        }
+        
         window.onload = function() {
+            // Get the 'stand' data from the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var stand = urlParams.toString();; // Changed this line
+
+            // Set the 'stand' field value
+            if(stand !== null) {
+                document.getElementById('stand').value = stand;
+            }
             // Check if there is any user data in local storage
             if(localStorage.getItem('userData') !== null) {
                 // Get the user data from local storage and parse it back into an object
@@ -63,14 +64,21 @@
             var name = document.getElementById('name').value;
             var stand = document.getElementById('stand').value;
 
-            // Get the user data from local storage
-            var userDataLocalStorage = JSON.parse(localStorage.getItem('userData'));
+            
+            // Get the 'stands' array from local storage
+            var standsLocalStorage = JSON.parse(localStorage.getItem('stands'));
 
             // If the 'stand' value in local storage is the same as the 'stand' value in the form, stop the execution of the function
-            if (userDataLocalStorage && userDataLocalStorage.stand === stand) {
+            if (standsLocalStorage && standsLocalStorage.includes(stand)) {
                 alert('Du har vært på denne standen.');
                 return;
             }
+
+            // Add the 'stand' value to the 'stands' array and save it to local storage
+            var stands = standsLocalStorage || [];
+            stands.push(stand);
+            localStorage.setItem('stands', JSON.stringify(stands));
+
                 // Save the user data to local storage
             var userData = {
                 name: name,
